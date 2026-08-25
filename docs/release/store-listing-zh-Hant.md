@@ -3,6 +3,8 @@
 ## 共用資料
 
 - App 名稱：銀髮記憶
+- iOS Bundle ID：`com.pyramius.reminder`
+- Android application ID：`com.pyramius.reminder`
 - 隱私政策：https://github.com/Jobdoing/Reminder/blob/main/PRIVACY.md
 - 支援網址：https://github.com/Jobdoing/Reminder/issues
 - 帳號：不需要
@@ -80,7 +82,10 @@ App 不需要帳號。開啟後允許相機，拍照後再允許麥克風與語�
 
 - Play App Signing 設定；本機 Android upload keystore 已建立。
 - App Store Connect 與 Play Console 的法律聯絡資料。
-- iPhone 與 Android 商店截圖（不可包含真實聯絡人或個人記錄）。
 - App Store 新版年齡分級問卷與 Xcode Privacy Report 最終核對。
 - Play Console 的 Data Safety 與精準提醒用途申報。
-- 正式版簽章後的兩台實機驗收。
+
+## 已完成的送審材料
+
+- iPhone 與 Android 商店截圖；只含示範資料，不含真實聯絡人或個人記錄。
+- Release 建置後的 iPhone 與 Android 實機安裝及啟動驗收。

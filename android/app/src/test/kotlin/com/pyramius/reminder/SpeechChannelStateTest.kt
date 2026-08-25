@@ -1,4 +1,4 @@
-package cc.jobdone.reminder
+package com.pyramius.reminder
 
 import android.speech.SpeechRecognizer
 import org.junit.Assert.assertEquals

@@ -34,8 +34,8 @@ void main() {
   test('Android uses the Reminder application identity', () {
     final buildFile = File('android/app/build.gradle.kts').readAsStringSync();
 
-    expect(buildFile, contains('namespace = "cc.jobdone.reminder"'));
-    expect(buildFile, contains('applicationId = "cc.jobdone.reminder"'));
+    expect(buildFile, contains('namespace = "com.pyramius.reminder"'));
+    expect(buildFile, contains('applicationId = "com.pyramius.reminder"'));
   });
 
   test('Android declares read access for contact import', () {
@@ -139,10 +139,10 @@ void main() {
       'android/app/src/main/AndroidManifest.xml',
     ).readAsStringSync();
     final activity = File(
-      'android/app/src/main/kotlin/cc/jobdone/reminder/MainActivity.kt',
+      'android/app/src/main/kotlin/com/pyramius/reminder/MainActivity.kt',
     ).readAsStringSync();
     final speechChannel = File(
-      'android/app/src/main/kotlin/cc/jobdone/reminder/SpeechChannel.kt',
+      'android/app/src/main/kotlin/com/pyramius/reminder/SpeechChannel.kt',
     ).readAsStringSync();
 
     expect(manifest, contains('android.permission.RECORD_AUDIO'));

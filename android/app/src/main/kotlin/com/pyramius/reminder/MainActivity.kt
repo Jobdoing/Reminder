@@ -1,4 +1,4 @@
-package cc.jobdone.reminder
+package com.pyramius.reminder
 
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine

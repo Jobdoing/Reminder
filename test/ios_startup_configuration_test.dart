@@ -45,7 +45,7 @@ void main() {
     expect(project, isNot(contains('DEVELOPMENT_TEAM = 3QR9879MU8;')));
     expect(
       RegExp(
-        r'PRODUCT_BUNDLE_IDENTIFIER = cc\.jobdone\.reminder(?:\.RunnerTests)?;',
+        r'PRODUCT_BUNDLE_IDENTIFIER = com\.pyramius\.reminder(?:\.RunnerTests)?;',
       ).allMatches(project),
       hasLength(6),
     );

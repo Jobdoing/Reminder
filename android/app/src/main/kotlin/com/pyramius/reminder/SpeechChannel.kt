@@ -1,4 +1,4 @@
-package cc.jobdone.reminder
+package com.pyramius.reminder
 
 import android.Manifest
 import android.content.Context

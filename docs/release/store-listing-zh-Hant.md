@@ -88,4 +88,5 @@ App 不需要帳號。開啟後允許相機，拍照後再允許麥克風與語�
 ## 已完成的送審材料
 
 - iPhone 與 Android 商店截圖；只含示範資料，不含真實聯絡人或個人記錄。
+- Google Play 1024 × 500 宣傳圖：`docs/release/assets/Reminder-feature-graphic.png`。
 - Release 建置後的 iPhone 與 Android 實機安裝及啟動驗收。

@@ -109,4 +109,14 @@ void main() {
     expect(r.text, '今天跟李子買水果');
     expect(r.mentioned, isEmpty);
   });
+
+  test('an overlapping partial PERSON span cannot relax a close name', () {
+    final r = nc.correct(
+      '今天陪李佩瑜買水果',
+      ['李沛米'],
+      personSpans: const [PersonSpan(3, 5)],
+    );
+    expect(r.text, '今天陪李佩瑜買水果');
+    expect(r.mentioned, isEmpty);
+  });
 }

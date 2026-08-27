@@ -133,7 +133,7 @@ class _CaptureReviewScreenState extends State<CaptureReviewScreen> {
     );
     setState(() {
       _listening = false;
-      _controller.text = text;
+      _controller.text = analysis.correctedText;
       _analysis = analysis;
       _reminderAt = _effectiveReminderAt(analysis);
     });

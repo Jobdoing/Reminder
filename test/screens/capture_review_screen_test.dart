@@ -7,6 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:reminder/models/memory_record.dart';
 import 'package:reminder/semantic/note_analysis.dart';
+import 'package:reminder/services/contact_store.dart';
 import 'package:reminder/services/part_of_day_store.dart';
 import 'package:reminder/services/stt/stt_service.dart';
 import 'package:reminder/services/stt/stub_stt_service.dart';
@@ -48,6 +49,40 @@ void main() {
     expect(saved, isNotNull);
     expect(saved!.photoPath, '/tmp/x.jpg');
     expect(saved!.text, '明天下午看王醫師（記得帶健保卡）');
+  });
+
+  testWidgets('shows and saves the corrected contact name after speech stops', (
+    tester,
+  ) async {
+    MemoryRecord? saved;
+    await tester.runAsync(() async {
+      Hive.init(null);
+      await Hive.openBox('contacts', bytes: Uint8List(0));
+      await ContactStore.setNames(['李沛米']);
+    });
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: CaptureReviewScreen(
+          photoPath: '/tmp/x.jpg',
+          stt: StubSttService(finalText: '提醒我明天下午要跟李佩瑜吃飯'),
+          onSave: (record) async => saved = record,
+          onRetake: () {},
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('說完了'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('提醒我明天下午要跟李沛米吃飯'), findsOneWidget);
+    await tester.tap(find.text('存起來'));
+    await tester.pumpAndSettle();
+    expect(saved?.text, '提醒我明天下午要跟李沛米吃飯');
+    expect(saved?.mentionedContacts, ['李沛米']);
+
+    await tester.pumpWidget(const SizedBox.shrink());
+    await tester.runAsync(Hive.close);
   });
 
   testWidgets('save cannot be submitted twice while it is still running', (

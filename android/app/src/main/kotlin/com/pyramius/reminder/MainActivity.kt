@@ -7,5 +7,6 @@ class MainActivity : FlutterActivity() {
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         SpeechChannel.register(flutterEngine.dartExecutor.binaryMessenger, applicationContext)
+        PersonSpanChannel.register(flutterEngine.dartExecutor.binaryMessenger, applicationContext)
     }
 }

@@ -154,4 +154,30 @@ void main() {
     expect(speechChannel, contains('reminder/speech_events'));
     expect(speechChannel, contains('reminder/speech_cmd'));
   });
+
+  test('Android packages and registers the local PERSON model', () {
+    final buildFile = File('android/app/build.gradle.kts').readAsStringSync();
+    final activity = File(
+      'android/app/src/main/kotlin/com/pyramius/reminder/MainActivity.kt',
+    ).readAsStringSync();
+    final channel = File(
+      'android/app/src/main/kotlin/com/pyramius/reminder/PersonSpanChannel.kt',
+    ).readAsStringSync();
+    final modelFiles = {
+      'model.nb': 1932895,
+      'q2b.dic': 45051,
+      'tag.dic': 425,
+      'word.dic': 72549,
+    };
+
+    expect(buildFile, contains('src/main/cpp/CMakeLists.txt'));
+    expect(activity, contains('PersonSpanChannel.register'));
+    expect(channel, contains('reminder/person_spans'));
+    expect(channel, contains('Executors.newSingleThreadExecutor'));
+    for (final entry in modelFiles.entries) {
+      final file = File('android/app/src/main/assets/lac_model/${entry.key}');
+      expect(file.existsSync(), isTrue);
+      expect(file.lengthSync(), entry.value);
+    }
+  });
 }

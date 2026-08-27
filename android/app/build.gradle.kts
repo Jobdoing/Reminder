@@ -36,6 +36,13 @@ android {
         versionName = flutter.versionName
     }
 
+    externalNativeBuild {
+        cmake {
+            path = file("src/main/cpp/CMakeLists.txt")
+            version = "3.22.1"
+        }
+    }
+
     signingConfigs {
         create("release") {
             keyAlias = keystoreProperties["keyAlias"] as String?

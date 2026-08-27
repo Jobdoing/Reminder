@@ -1,6 +1,6 @@
 # Hybrid Contact Name Update
 
-Status: Android and iOS release candidates verified; store submission pending
+Status: Android and iOS release candidates verified and submitted for review
 
 ## Production identity
 
@@ -61,8 +61,14 @@ separately and passed.
 - Automated tests verify text-to-model-to-contact matching, but they do not
   generate physical speech into the phone microphone. The user accepted this
   limitation for this release.
-- Upload both artifacts, complete store validation, and submit both releases
-  for review.
+- Google Play accepted build `3 (1.0.2)` for a 100% production rollout. The
+  release is under review and is not yet confirmed publicly available.
+- App Store Connect accepted iOS `1.0.2 (3)` and reports "Waiting for Review".
+  Automatic release is selected, but the update is not yet publicly available.
+- Xcode uploaded the iOS archive with two non-blocking warnings: iOS 13 will no
+  longer meet Apple's minimum version starting in spring 2027, and the bundled
+  `objective_c.framework` has no matching dSYM. The latter limits crash-symbol
+  quality for that dependency but did not block submission.
 
 ## Rollback
 

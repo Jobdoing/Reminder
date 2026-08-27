@@ -1,6 +1,6 @@
 # Phonetic Contact Name Update
 
-Status: Android UAT
+Status: Release candidate ready; store submission pending approval
 
 ## Objective
 
@@ -29,12 +29,14 @@ offline and must not assume a fixed name length.
 
 ## Release Gates
 
-1. Focused and full Flutter tests pass without skips.
-2. Static analysis has no findings.
-3. Android release APK and App Bundle build successfully.
-4. An in-place Pixel 7 update preserves the existing contact list.
-5. The real speech case is corrected on the Pixel 7.
-6. Store submission requires separate explicit approval.
+1. [x] Focused and full Flutter tests pass without skips.
+2. [x] Static analysis has no findings.
+3. [x] Android release APK and App Bundle build successfully.
+4. [x] An in-place Pixel 7 update preserves the existing contact list.
+5. [x] The real speech case is corrected on the Pixel 7.
+6. [ ] Store submission requires separate explicit approval.
+
+The real-device result in gate 5 was confirmed by the user on 2026-08-27.
 
 ## Rollback
 

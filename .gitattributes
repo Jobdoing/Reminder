@@ -1,0 +1,7 @@
+third_party/baidu_lac/ios/assets/lac_model/*.dic -whitespace
+third_party/baidu_lac/ios/assets/lac_model/model.nb binary
+third_party/baidu_lac/ios/lib/*.a binary
+third_party/baidu_lac/ios/src/lac.cpp -whitespace
+third_party/baidu_lac/ios/src/lac.h -whitespace
+third_party/baidu_lac/ios/src/lac_util.cpp -whitespace
+third_party/baidu_lac/ios/src/lac_util.h -whitespace

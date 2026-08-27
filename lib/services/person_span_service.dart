@@ -10,7 +10,9 @@ class PersonSpanService {
   static const _channel = MethodChannel('reminder/person_spans');
 
   Future<List<PersonSpan>> detect(String text) async {
-    if (!Platform.isAndroid || text.isEmpty) return const [];
+    if ((!Platform.isAndroid && !Platform.isIOS) || text.isEmpty) {
+      return const [];
+    }
     try {
       final words = await _channel.invokeListMethod<String>('detect', text);
       return locateWords(text, words ?? const []);

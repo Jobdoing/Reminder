@@ -1,5 +1,6 @@
 import AVFoundation
 import Flutter
+import PaddleLAC
 import Speech
 import UIKit
 
@@ -15,6 +16,7 @@ import UIKit
     GeneratedPluginRegistrant.register(with: flutterEngine)
     if let registrar = flutterEngine.registrar(forPlugin: "SpeechChannel") {
       SpeechChannel.register(messenger: registrar.messenger())
+      PaddleLACPersonSpanChannel.register(with: registrar.messenger())
     }
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }

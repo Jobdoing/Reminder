@@ -6,9 +6,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:reminder/models/memory_record.dart';
+import 'package:reminder/semantic/name_corrector.dart';
 import 'package:reminder/semantic/note_analysis.dart';
 import 'package:reminder/services/contact_store.dart';
 import 'package:reminder/services/part_of_day_store.dart';
+import 'package:reminder/services/person_span_service.dart';
 import 'package:reminder/services/stt/stt_service.dart';
 import 'package:reminder/services/stt/stub_stt_service.dart';
 import 'package:reminder/screens/capture_review_screen.dart';
@@ -65,7 +67,8 @@ void main() {
       MaterialApp(
         home: CaptureReviewScreen(
           photoPath: '/tmp/x.jpg',
-          stt: StubSttService(finalText: '提醒我明天下午要跟李佩瑜吃飯'),
+          stt: StubSttService(finalText: '李佩瑜明天下午來吃飯'),
+          personSpanService: const _FixedPersonSpanService([PersonSpan(0, 3)]),
           onSave: (record) async => saved = record,
           onRetake: () {},
         ),
@@ -75,10 +78,10 @@ void main() {
     await tester.tap(find.text('說完了'));
     await tester.pumpAndSettle();
 
-    expect(find.text('提醒我明天下午要跟李沛米吃飯'), findsOneWidget);
+    expect(find.text('李沛米明天下午來吃飯'), findsOneWidget);
     await tester.tap(find.text('存起來'));
     await tester.pumpAndSettle();
-    expect(saved?.text, '提醒我明天下午要跟李沛米吃飯');
+    expect(saved?.text, '李沛米明天下午來吃飯');
     expect(saved?.mentionedContacts, ['李沛米']);
 
     await tester.pumpWidget(const SizedBox.shrink());
@@ -526,6 +529,15 @@ class _FailingSttService implements SttService {
 
   @override
   Future<String> stop() async => '';
+}
+
+class _FixedPersonSpanService extends PersonSpanService {
+  const _FixedPersonSpanService(this.spans);
+
+  final List<PersonSpan> spans;
+
+  @override
+  Future<List<PersonSpan>> detect(String text) async => spans;
 }
 
 class _TrackingSttService implements SttService {

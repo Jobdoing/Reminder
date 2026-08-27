@@ -11,6 +11,13 @@ class NameCorrection {
   const NameCorrection(this.text, this.mentioned);
 }
 
+class PersonSpan {
+  final int start;
+  final int end;
+
+  const PersonSpan(this.start, this.end);
+}
+
 class NameCorrector {
   const NameCorrector();
 
@@ -19,7 +26,11 @@ class NameCorrector {
   static const _ambiguityMargin = 0.12;
   static const _relationshipCues = {'跟', '和', '與', '找', '給', '約', '問', '叫'};
 
-  NameCorrection correct(String text, List<String> contacts) {
+  NameCorrection correct(
+    String text,
+    List<String> contacts, {
+    List<PersonSpan> personSpans = const [],
+  }) {
     final textChars = _toCharList(text);
     if (textChars.isEmpty || contacts.isEmpty) {
       return NameCorrection(text, const []);
@@ -54,11 +65,17 @@ class NameCorrector {
         nameChars,
         nameChars.map(_readings).toList(),
       );
-      // NOTE(ceiling): A relationship cue permits one severe STT syllable
-      // error; use a trained name-span model if real speech needs more context.
+      // NOTE(ceiling): The lower threshold still requires most readings to
+      // match; a future contact reranker can replace this conservative gate.
       final hasStrongContext =
-          _hasRelationshipCue(textChars, match.start) &&
-          _hasTwoExactReadings(textReadings, match.start, match.end, nameChars);
+          (_hasRelationshipCue(textChars, match.start) ||
+              _matchesPersonSpan(personSpans, match.start, match.end)) &&
+          _hasEnoughExactReadings(
+            textReadings,
+            match.start,
+            match.end,
+            nameChars,
+          );
       final minimumScore = hasStrongContext
           ? _contextualMinimumScore
           : _minimumScore;
@@ -126,7 +143,10 @@ class NameCorrector {
   static bool _hasRelationshipCue(List<String> text, int nameStart) =>
       nameStart > 0 && _relationshipCues.contains(text[nameStart - 1]);
 
-  static bool _hasTwoExactReadings(
+  static bool _matchesPersonSpan(List<PersonSpan> spans, int start, int end) =>
+      spans.any((span) => span.start == start && span.end == end);
+
+  static bool _hasEnoughExactReadings(
     List<List<String>> textReadings,
     int start,
     int end,
@@ -138,7 +158,8 @@ class NameCorrector {
       final nameReadings = _readings(nameChars[index]);
       if (textReadings[start + index].any(nameReadings.contains)) exact++;
     }
-    return exact >= 2;
+    final required = max(2, (nameChars.length * 2 / 3).ceil());
+    return exact >= required;
   }
 
   static List<_Span> _exactSpans(List<String> text, List<String> name) {

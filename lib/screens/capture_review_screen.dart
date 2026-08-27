@@ -11,6 +11,7 @@ import '../semantic/note_analysis.dart' as na;
 import '../semantic/note_analyzer.dart';
 import '../services/contact_store.dart';
 import '../services/part_of_day_store.dart';
+import '../services/person_span_service.dart';
 import '../services/stt/stt_service.dart';
 import '../widgets/big_button.dart';
 
@@ -22,6 +23,7 @@ class CaptureReviewScreen extends StatefulWidget {
     required this.onSave,
     required this.onRetake,
     this.analyzer = const NoteAnalyzer(),
+    this.personSpanService = const PersonSpanService(),
     this.now,
   });
 
@@ -32,6 +34,7 @@ class CaptureReviewScreen extends StatefulWidget {
 
   // Injectable for deterministic tests; defaults to DateTime.now() at analysis time.
   final NoteAnalyzer analyzer;
+  final PersonSpanService personSpanService;
   final DateTime? now;
 
   @override
@@ -126,10 +129,13 @@ class _CaptureReviewScreenState extends State<CaptureReviewScreen> {
     final full = await widget.stt.stop();
     if (!mounted) return;
     final text = full.isNotEmpty ? full : _partial;
+    final personSpans = await widget.personSpanService.detect(text);
+    if (!mounted) return;
     final analysis = widget.analyzer.analyze(
       text,
       now: widget.now ?? DateTime.now(),
       contacts: ContactStore.names(),
+      personSpans: personSpans,
     );
     setState(() {
       _listening = false;

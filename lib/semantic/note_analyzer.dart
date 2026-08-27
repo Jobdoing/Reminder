@@ -7,15 +7,20 @@ class NoteAnalyzer {
   final ReminderDetector _reminder;
 
   const NoteAnalyzer({ReminderDetector reminder = const ReminderDetector()})
-      : _reminder = reminder;
+    : _reminder = reminder;
 
   NoteAnalysis analyze(
     String text, {
     DateTime? now,
     List<String> contacts = const [],
+    List<PersonSpan> personSpans = const [],
   }) {
     // Run NameCorrector first so downstream detector/classifier see clean text.
-    final correction = const NameCorrector().correct(text, contacts);
+    final correction = const NameCorrector().correct(
+      text,
+      contacts,
+      personSpans: personSpans,
+    );
     final corrected = correction.text;
 
     final hit = _reminder.detect(corrected, now: now);

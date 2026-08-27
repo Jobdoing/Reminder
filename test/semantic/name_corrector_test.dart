@@ -23,6 +23,26 @@ void main() {
     expect(r.mentioned, ['李沛米']);
   });
 
+  test('uses an exact PERSON span to correct a name at sentence start', () {
+    final r = nc.correct(
+      '李佩瑜明天下午來吃飯',
+      ['李沛米'],
+      personSpans: const [PersonSpan(0, 3)],
+    );
+    expect(r.text, '李沛米明天下午來吃飯');
+    expect(r.mentioned, ['李沛米']);
+  });
+
+  test('uses an exact PERSON span after an arbitrary prefix', () {
+    final r = nc.correct(
+      '明天下午記得陪李佩瑜吃飯',
+      ['李沛米'],
+      personSpans: const [PersonSpan(7, 10)],
+    );
+    expect(r.text, '明天下午記得陪李沛米吃飯');
+    expect(r.mentioned, ['李沛米']);
+  });
+
   test('corrects a two-character homophone', () {
     final r = nc.correct('明天找吳名', ['吳明']);
     expect(r.text, '明天找吳明');
@@ -76,6 +96,16 @@ void main() {
 
   test('relationship context alone does not force a weak match', () {
     final r = nc.correct('今天跟李子買水果', ['李沛米']);
+    expect(r.text, '今天跟李子買水果');
+    expect(r.mentioned, isEmpty);
+  });
+
+  test('a shorter false PERSON span cannot relax another candidate', () {
+    final r = nc.correct(
+      '今天跟李子買水果',
+      ['李沛米'],
+      personSpans: const [PersonSpan(3, 5)],
+    );
     expect(r.text, '今天跟李子買水果');
     expect(r.mentioned, isEmpty);
   });
